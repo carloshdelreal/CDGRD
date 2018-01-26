@@ -1,0 +1,31 @@
+.logo{
+    width: 140px;
+    display: inline-block;
+}
+footer{
+    font-family: cursive;
+}
+.estrella-verde{
+    fill:green;
+    stroke:purple;
+    stroke-width:5;
+}
+.estrella-azul{
+    fill:blue;
+    stroke:purple;
+    stroke-width:5;
+}
+svg{
+    max-height: 400px;
+    border: 1px solid black;
+
+}
+svg polygon{
+    fill:blue;
+    stroke:purple;
+    stroke-width:5;
+}
+
+#map{
+    height: 400px;
+}

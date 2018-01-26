@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Profile</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="container">
+                <h3>Información de Perfil</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-5 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1">
+
+            <div class="container">
+                <table class="table table-condensed">
+                    <tbody>
+                        <tr>
+                            <th>Username:</th>
+                            <td>{{ user }}</td>
+                        </tr>
+                        <tr>
+                            <th>First Name:</th>
+                            <td>{{ user.first_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Last Name:</th>
+                            <td>{{ user.last_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description:</th>
+                            <td>{{ user.UserProfile.description }}</td>
+                        </tr>
+                        <tr>
+                            <th>City:</th>
+                            <td>{{ user.UserProfile.city }}</td>
+                        </tr>
+                        <tr>
+                            <th>Website:</th>
+                            <td>{{ user.UserProfile.website }}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone:</th>
+                            <td>{{ user.UserProfile.phone }}</td>
+                        </tr>
+                        <tr>
+                            <th>Image:</th>
+                            <td><img src="{{ user.userprofile.image.url }}" width="240" alt="{{ user }}_photo"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="container">
+                <h4>Editar Perfil</h4>
+                <a href="{% url 'repmuni:profile_edit' %}"><button type="button">Editar Perfil</button></a>
+            </div>
+            <div class="container">
+                <h4>Cambiar Password</h4>
+                <a href="{% url 'repmuni:password_change' %}"><button type="button">Cambiar Pass</button></a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
