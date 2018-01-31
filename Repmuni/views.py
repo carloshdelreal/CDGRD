@@ -9,13 +9,10 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 def Reporte(request):
-    if  request.user.is_anonymous:
-        return render(request, 'RepMuni/reporte_anonimo.html')
-    else:
-        return render(request, 'RepMuni/reporte_anonimo.html')
+    return render(request, 'Repmuni/reporte_anonimo.html')
 
 def Mapa(request):
-    return render(request, 'RepMuni/mapa.html')
+    return render(request, 'Repmuni/mapa.html')
 
 def register(request):
     if request.method == 'POST':
@@ -27,22 +24,22 @@ def register(request):
                        'msj': request.POST['username'],
                        'form_register': form_register
                        }
-            return render(request, 'RepMuni/register.html', context)
+            return render(request, 'home/home.html', context)
         else:
             # Return an 'Invalid Login' error message
             form_register = RegistrationForm()
             context = {'welcome': 'Mal Password',
                        'form_register': form_register
                        }
-            return render(request, 'RepMuni/register.html', context)
+            return render(request, 'Repmuni/register.html', context)
     else:
         form_register = RegistrationForm()
         context = {'form_register': form_register}
-        return render(request, 'RepMuni/register.html', context)
+        return render(request, 'Repmuni/register.html', context)
 
 def view_profile(request):
     context = {'user': request.user}
-    return render(request, 'RepMuni/profile.html')
+    return render(request, 'Repmuni/profile.html')
 
 def edit_profile(request):
     if request.method == 'POST':
@@ -54,7 +51,7 @@ def edit_profile(request):
     else:
         form = EditProfileForm(instance=request.user)
         context = {'form': form}
-        return render(request, 'RepMuni/profile_edit.html',context)
+        return render(request, 'Repmuni/profile_edit.html',context)
 
 def Password_Change(request):
     if request.method == 'POST':
@@ -69,4 +66,4 @@ def Password_Change(request):
     else:
         form = PasswordChangeForm(user=request.user)
         context = {'form': form}
-        return render(request, 'RepMuni/password_change.html',context)
+        return render(request, 'Repmuni/password_change.html',context)

@@ -19,7 +19,7 @@
             <div class="col-xs-12 col-md-8 col-md-offset-2">
                 <div class="well">
                     <h3>Registrarse</h3>
-                    <form action="login" method="post">
+                    <form method="post">
                         {% csrf_token %}
                         {{ form_register.as_p }}
                         <input type="submit" value="submit" name="register" />
