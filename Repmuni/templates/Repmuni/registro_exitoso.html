@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block head %}
-<title>Register!</title>
+<title>Registro Exitoso</title>
 {% endblock %}
 
 {% block body %}
@@ -18,12 +18,10 @@
         <div class="row">
             <div class="col-xs-12 col-md-8 col-md-offset-2">
                 <div class="well">
-                    <h3>Registrarse</h3>
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form_register.as_p }}
-                        <input type="submit" value="submit" name="register" />
-                    </form>
+                    <h3>Se ha registrado satisfactoriamente</h3>
+                    <p>
+                        Se ha Registrado de manera exitosa en nuestra aplicación, por favor ingrese con su usuario y contraseña
+                    </p>
                 </div>
 
             </div>
