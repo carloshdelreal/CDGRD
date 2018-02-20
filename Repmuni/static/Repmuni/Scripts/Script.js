@@ -33,25 +33,85 @@ $(function() {
 });
 
 var map;
+
+var markers = [];
+
 function initMap(){
-    var localizacion = {lat: 7.8940231, lng: -72.7578256};
+    
     map = new google.maps.Map(document.getElementById('map'), {
-        center: localizacion ,
+        center: {lat: 7.8940231, lng: -72.7578256} ,
         zoom: 8
     });
-    var marcador = {lat: 7.924502, lng: -72.5019997}
-    var marker = new google.maps.Marker({
-          position: marcador,
-          map: map,
-          title: "Home Sweet Home!"
-        });
-    var infoWindow = new google.maps.InfoWindow({
-        content: "Do you ever feel like an InfoWindow, floating through the wind," +
-            'ready to start again?'
-    });
-    marker.addListener('click', function(){
-        infoWindow.open(map, marker);
-    });
-}
+
+    var locations = [
+        {title: 'Tibu', location: {lat: 8.6413342762, lng: -72.732154245}},
+        {title: 'El Carmen', location: {lat: 8.53402482554, lng: -73.4568454812}},
+        {title: 'Ocana', location: {lat: 8.24007035822, lng: -73.3465060431}},
+        {title: 'Salazar', location: {lat: 7.77665688289, lng: -72.8135700188}},
+        {title: 'Chinácota', location: {lat: 7.60370514094, lng: -72.6031172289}},
+        {title: 'Pamplona', location: {lat: 7.3863612608, lng: -72.6550496324}},
+        {title: 'Toledo', location: {lat: 7.30987114327, lng: -72.4831727537}}
+    ]
+    
+    var largeinfoWindow = new google.maps.InfoWindow();
+    
+    var bounds = new google.maps.LatLngBounds();
+
+    for (var i=0; i < locations.length; i++){
+            var position = locations[i].location;
+            var title = locations[i].title;
+            
+            var marker = new google.maps.Marker({
+                position: position,
+                title: title,
+                animation: google.maps.Animation.DROP,
+                id: i
+            });
+            
+            
+            //push the marker to our array of markers
+            markers.push(marker);
+            
+            bounds.extend(marker.position);
+
+            marker.addListener('click', function(){
+                populateInfoWindow(this, largeinfoWindow);
+            });
+        }
+        map.fitBounds(bounds);
+
+        document.getElementById('show-listings').addEventListener('click', showListings);
+        document.getElementById('hide-listings').addEventListener('click', hideListings);
+    }
+
+    function populateInfoWindow(marker, infowindow) {
+        // Check to make sure the infowindow is not already opened on this marker.
+        if (infowindow.marker != marker) {
+          infowindow.marker = marker;
+          infowindow.setContent('<div>' + marker.title + '</div>');
+          infowindow.open(map, marker);
+          // Make sure the marker property is cleared if the infowindow is closed.
+          infowindow.addListener('closeclick', function() {
+            infowindow.marker = null;
+          });
+        }
+    }
+
+    function showListings(){
+        var bounds = new google.maps.LatLngBounds();
+        for ( var i = 0; i < markers.length; i++ ){
+            markers[i].setMap(map);
+            bounds.extend(markers[i].position);
+        }
+        map.fitBounds(bounds)
+    }
+
+    function hideListings(){
+        for (var i = 0; i < markers.length; i++){
+            markers[i].setMap(null);
+        }
+    }
+    
+
 
 
