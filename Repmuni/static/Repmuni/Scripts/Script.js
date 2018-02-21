@@ -37,10 +37,28 @@ var map;
 var markers = [];
 
 function initMap(){
+    var styles = [
+        {
+            featureType: 'administrative.province',
+            elementType: 'geometry.stroke',
+            stylers: [{color: '#5e3735'}]
+        },{
+            featureType: 'administrative.neighborhood',
+            elementType: 'geometry.fill',
+            stylers: [{color: '#5e3735'}]
+        },{
+            featureType: 'poi.medical',
+            elementType: 'geometry.fill',
+            stylers: [{color: '#1111ff'}]
+        },
+        
+    ]
     
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 7.8940231, lng: -72.7578256} ,
-        zoom: 8
+        zoom: 7,
+        styles: styles,
+        mapTypeControl: false
     });
 
     var locations = [
@@ -54,7 +72,8 @@ function initMap(){
     ]
     
     var largeinfoWindow = new google.maps.InfoWindow();
-    
+    var defaultIcon = makeMarkerIcon('0091ff');
+    var highlightedIcon = makeMarkerIcon('ffff24');
     var bounds = new google.maps.LatLngBounds();
 
     for (var i=0; i < locations.length; i++){
@@ -64,11 +83,10 @@ function initMap(){
             var marker = new google.maps.Marker({
                 position: position,
                 title: title,
+                icon: defaultIcon,
                 animation: google.maps.Animation.DROP,
                 id: i
             });
-            
-            
             //push the marker to our array of markers
             markers.push(marker);
             
@@ -77,12 +95,19 @@ function initMap(){
             marker.addListener('click', function(){
                 populateInfoWindow(this, largeinfoWindow);
             });
-        }
-        map.fitBounds(bounds);
-
-        document.getElementById('show-listings').addEventListener('click', showListings);
-        document.getElementById('hide-listings').addEventListener('click', hideListings);
+            marker.addListener('mouseover', function() {
+                this.setIcon(highlightedIcon);
+            });
+            marker.addListener('mouseout', function(){
+                this.setIcon(defaultIcon);
+            });
     }
+
+    map.fitBounds(bounds);
+    document.getElementById('show-listings').addEventListener('click', showListings);
+    document.getElementById('hide-listings').addEventListener('click', hideListings);
+    
+    //Functions
 
     function populateInfoWindow(marker, infowindow) {
         // Check to make sure the infowindow is not already opened on this marker.
@@ -102,20 +127,34 @@ function initMap(){
         }
     }
 
-    function showListings(){
-        var bounds = new google.maps.LatLngBounds();
-        for ( var i = 0; i < markers.length; i++ ){
-            markers[i].setMap(map);
-            bounds.extend(markers[i].position);
-        }
-        map.fitBounds(bounds)
+    
+    
+}
+function makeMarkerIcon(markerColor){
+    var markerImage = new google.maps.MarkerImage(
+        'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +'|40|_|%E2%80%A2',            
+        new google.maps.Size(21,34),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(10, 34),
+        new google.maps.Size(21, 34));
+    return markerImage;
+}
+function showListings(){
+    var bounds = new google.maps.LatLngBounds();
+    for ( var i = 0; i < markers.length; i++ ){
+        markers[i].setMap(map);
+        bounds.extend(markers[i].position);
     }
+    map.fitBounds(bounds)
+}
 
-    function hideListings(){
-        for (var i = 0; i < markers.length; i++){
-            markers[i].setMap(null);
-        }
+function hideListings(){
+    for (var i = 0; i < markers.length; i++){
+        markers[i].setMap(null);
     }
+}
+
+    
     
 
 
