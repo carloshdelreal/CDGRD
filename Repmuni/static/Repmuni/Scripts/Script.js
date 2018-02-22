@@ -191,7 +191,10 @@ function initMap(){
         // Make sure the search is re-done if the poly is changed.
         polygon.getPath().addListener('set_at', searchWithinPolygon);
         polygon.getPath().addListener('insert_at', searchWithinPolygon);
-      });
+
+        var area =google.maps.geometry.spherical.computeArea(polygon.getPath());
+        window.alert(area.toFixed(2)+" metros cuadrados");
+    });
 }
     
 function makeMarkerIcon(markerColor){
