@@ -62,13 +62,18 @@ function initMap(){
     });
 
     var locations = [
+        
         {title: 'Tibu', location: {lat: 8.6413342762, lng: -72.732154245}},
         {title: 'El Carmen', location: {lat: 8.53402482554, lng: -73.4568454812}},
         {title: 'Ocana', location: {lat: 8.24007035822, lng: -73.3465060431}},
         {title: 'Salazar', location: {lat: 7.77665688289, lng: -72.8135700188}},
         {title: 'Chinácota', location: {lat: 7.60370514094, lng: -72.6031172289}},
         {title: 'Pamplona', location: {lat: 7.3863612608, lng: -72.6550496324}},
-        {title: 'Toledo', location: {lat: 7.30987114327, lng: -72.4831727537}}
+        {title: 'Toledo', location: {lat: 7.30987114327, lng: -72.4831727537}},
+         
+        {title: 'Bilbao', location: {lat: 7.925964, lng: -72.499061}},
+        {title: 'Cúcuta', location: {lat: 7.885684, lng: -72.503675}},
+        //{title: 'Manhattan', location: {lat: 40.741267, lng: -73.988569}}
     ]
     
     var largeinfoWindow = new google.maps.InfoWindow();
@@ -112,18 +117,46 @@ function initMap(){
     function populateInfoWindow(marker, infowindow) {
         // Check to make sure the infowindow is not already opened on this marker.
         if (infowindow.marker != marker) {
-          infowindow.marker = marker;
-          infowindow.setContent(
-              '<h5>' + marker.title + '</h5>\n'+
-              '<div>Lat: '+ marker.position.lat().toFixed(7) +'</div>' + 
-              '<div>Lat: '+ marker.position.lng().toFixed(7) +'</div>'
-        
-        );
-          infowindow.open(map, marker);
-          // Make sure the marker property is cleared if the infowindow is closed.
-          infowindow.addListener('closeclick', function() {
-            infowindow.marker = null;
-          });
+            infowindow.setContent('');
+            infowindow.marker = marker;
+            // Make sure the marker property is cleared if the infowindow is closed.
+            infowindow.addListener('closeclick', function() {
+                infowindow.marker = null;
+            });
+
+            var streetViewService = new google.maps.StreetViewService();
+            var radius = 50;
+            function getStreetView(data, status){
+                if ( status == google.maps.StreetViewStatus.OK){
+                    var nearStreetViewLocation = data.location.latLng;
+                    var heading = google.maps.geometry.spherical.computeHeading(
+                        nearStreetViewLocation, marker.position);
+                    infowindow.setContent(                        
+                        '<div>' + marker.title + '</div>'+
+                        '<div>Lat: '+ marker.position.lat().toFixed(7) +'</div>' + 
+                        '<div>Lat: '+ marker.position.lng().toFixed(7) +'</div>'
+                        
+                    );
+                    var panoramaOptions = {
+                        position: nearStreetViewLocation,
+                        pov: {
+                            heading: heading,
+                            pitch: 30
+                        }
+                    };
+                    var panorama = new google.maps.StreetViewPanorama(
+                        document.getElementById('pano'), panoramaOptions);
+
+                }else{
+                    infowindow.setContent(
+                        '<div>' + marker.title + '</div>'+
+                        '<div>No Street View Found </div>'
+                    );
+                }
+
+            }
+            streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+            infowindow.open(map, marker);   
         }
     }
 
