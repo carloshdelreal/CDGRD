@@ -51,10 +51,12 @@
                             <th>Phone:</th>
                             <td>{{ user.UserProfile.phone }}</td>
                         </tr>
+                        {% if user.userprofile.image.url != null %}
                         <tr>
                             <th>Image:</th>
                             <td><img src="{{ user.userprofile.image.url }}" width="240" alt="{{ user }}_photo"></td>
                         </tr>
+                        {% endif %}
 
                     </tbody>
                 </table>

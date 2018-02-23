@@ -34,7 +34,6 @@ def register(request):
         return render(request, 'Repmuni/register.html', context)
 
 def view_profile(request):
-    context = {'user': request.user}
     return render(request, 'Repmuni/profile.html')
 
 def edit_profile(request):
