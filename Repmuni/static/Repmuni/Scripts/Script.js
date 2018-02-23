@@ -23,13 +23,7 @@ $(function() {
     });
     $("svg polygon").click(function(){
         alert("hello "+this.parentElement.getAttribute("name"));
-    });
-    $("svg polygon").click(function(){
-        alert("hello "+this.parentElement.getAttribute("name"));
-    });
-    $("svg polygon").click(function(){
-        alert("hello "+this.parentElement.getAttribute("name"));
-    });
+    });    
 });
 
 var map;
@@ -89,6 +83,11 @@ function initMap(){
           ]
         }
     });
+    // This autocomplete is for use in the geocoder entry box.
+    var zoomAutocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('zoom-to-area'));
+    zoomAutocomplete.bindTo('bounds', map);
+
     var defaultIcon = makeMarkerIcon('0091ff');
     var highlightedIcon = makeMarkerIcon('ffff24');
     var bounds = new google.maps.LatLngBounds();
