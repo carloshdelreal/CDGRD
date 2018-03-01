@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from .models import Report, ReportAlbums, Photos
 #from django.db import models
 
 class FormLogin(ModelForm):
@@ -41,4 +42,25 @@ class EditProfileForm(UserChangeForm):
             "last_name",
             "email",
             "password"
+        ]
+
+#######
+class PhotosForm(ModelForm):
+    class Meta:
+        model = Photos
+        fields = [
+            "image",
+            "imagedescription",
+        ]
+
+
+
+class ReportForm(ModelForm):
+    class Meta:
+        model = Report
+        fields = [
+            "title",
+            "fenomena",
+            "descrip",
+            "photos",
         ]

@@ -4,6 +4,7 @@ from django.contrib.auth.views import (
     login, logout, password_reset, password_reset_done, password_reset_confirm,
     password_reset_complete
 )
+from Repmuni.views import UploadPhotoView, DetailPhotoView
 
 
 #app_name = 'repmuni'
@@ -11,7 +12,10 @@ from django.contrib.auth.views import (
 urlpatterns = [
 
     url(r'^reporte/$', views.Reporte, name='reporte'),
+    url(r'^reporteReal/$', UploadPhotoView.as_view(), name='reporte_real'),
     url(r'^mapa/$', views.Mapa, name='mapa'),
+    url(r'^photo/(?P<pk>\d+)/$', DetailPhotoView.as_view(), name='detail'),
+    
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', login, {'template_name': 'Repmuni/login.html'}, name='login'),
     url(r'^logout/$', logout, {'template_name': 'Repmuni/logout.html'}, name='logout'),

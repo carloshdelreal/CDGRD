@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Mapa</title>
+<script async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing,places&key=AIzaSyBcV9t4hin5YG-KBRXb8rn4zD6XLoCmB7g&v=3&callback=initMap"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+            <div id="map"></div>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">
+            <form enctype="multipart/form-data" action="" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Send message" />
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
