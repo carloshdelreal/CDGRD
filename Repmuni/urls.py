@@ -35,7 +35,7 @@ urlpatterns = [
     url(r'^password-change/$', PasswordChangeView.as_view(), name='password_change'),
     url(r'^password-change/done/$', PasswordChangeDoneView.as_view(), name='password_change_done'),
     
-    url(r'^reset-password/$', PasswordResetView.as_view(success_url='repmuni/reset-password/done'), name='reset_password'),
+    url(r'^reset-password/$', PasswordResetView.as_view(success_url='done/'), name='reset_password'),
     url(r'^reset-password/done/$', PasswordResetDoneView.as_view(), name='password_reset_done'),
     url(r'^reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)/(?P<token>[0-9A-Za-z]{1,3}-[0-9A-Za-z]{1,20})/$',PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     url(r'^reset-password/complete/$', PasswordResetCompleteView, name='password_reset_complete'),
