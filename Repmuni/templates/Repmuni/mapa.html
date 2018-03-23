@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block head %}
 <title>Mapa</title>
+<script src="{% static 'Repmuni/Scripts/Script.js' %}"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing,places&key=AIzaSyBcV9t4hin5YG-KBRXb8rn4zD6XLoCmB7g&v=3&callback=initMap"></script>
 {% endblock %}
 

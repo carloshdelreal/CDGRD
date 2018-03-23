@@ -35,8 +35,30 @@
                     <h3>Ya tengo una cuenta</h3>
                     <form method="post">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" name="button">Log In!</button>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Usuario:</span>
+                                    {{ form.username }}
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Password:</span>
+                                    {{ form.password }}
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-qrcode"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-6 col-xs-offset-1 col-sm-4 col-sm-offset-1 col-md-4 col-md-offset-1">
+                                <button class="btn btn-warning btn-block" type="submit">Log In!</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
@@ -47,11 +69,9 @@
             <div class="col-xs-12 col-md-8 col-md-offset-2">
                 <div class="well">
                     <h3>Olvidé mi Contraseña</h3>
-                    <form method="post">
                         <a href="{% url 'repmuni:reset_password' %}">
-                            <button type="button" name="button">Restablecer Password</button>
+                            <button class="btn btn-default" type="button" name="button">Restablecer Password</button>
                         </a>
-                    </form>
                 </div>
 
             </div>

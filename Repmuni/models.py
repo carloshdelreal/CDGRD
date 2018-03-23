@@ -22,8 +22,8 @@ def create_profile(sender, **kwargs):
 post_save.connect(create_profile,sender=User)
 
 class Photos(models.Model):
-    image = models.ImageField(upload_to='Report_Photos', blank=True)
-    imagedescription = models.TextField()
+    image = models.ImageField(upload_to='Report_Photos', blank=False)
+    imagedescription = models.TextField(blank=False)
 
     def __str__(self):
         return "Image: " + self.imagedescription

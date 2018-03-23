@@ -14,27 +14,20 @@
         </div>
         <div class="col-xs-12 col-sm-7 col-md-8 col-lg-7">
             <form enctype="multipart/form-data" method="POST" action="">
-                {% for form in formset %}
                 {% csrf_token %}
                 <div class="row form-row">
                     <div class="col-sm-12">
                         <div class="form-group">
                             {{ form.image }}
+                            {# used when the form is submitted with error #}
+                            {# if value of name field exists then show remove icon else add icon #}
+                            {# if it is last form then display plus sign #}
                         </div>
                         <div class="form-group">
                             {{ form.imagedescription }}
                         </div>
-                        <div class="form-group">
-                            {% if form.imagedescription.value and forloop.counter != last_form_counter %}
-                                <span class="input-group-btn"><button class="btn btn-warning remove-form-row"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button></span>
-                            {% else %}
-                                <span class="input-group-btn"><button class="btn btn-success add-form-row"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span>
-                            {% endif %}
-                        </div>
                     </div>
-                </div>                
-                {% endfor %}
-                {{ formset.management_form }}
+                </div>               
                 <div class="row">
                     <div class="col-xs-4 col-xs-offset-2 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4">
                         <button class="btn btn-danger btn-block" type="submit">Reportar</button>

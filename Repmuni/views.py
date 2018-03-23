@@ -1,10 +1,10 @@
+from django.forms import modelformset_factory
 from django.shortcuts import render, redirect
-from Repmuni.forms import FormLogin, RegistrationForm, EditProfileForm
-from django.contrib.auth import authenticate, login, logout
+from Repmuni.forms import RegistrationForm, EditProfileForm
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, user_logged_in
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
-#from django.contrib.auth.decorators import login_required
-from django.contrib.auth import user_logged_in
+from django.contrib.auth.views import PasswordResetView
+#from django.contrib.auth.decorators import login_required 
 from django.contrib.auth.models import User
 # Create your views here.
 from django.views.generic.edit import FormView
@@ -24,20 +24,38 @@ class ReporteReal(FormView):
         return super().form_valid(form)
 
 class UploadPhotoView(View):
-    template_name = 'Repmuni/mapa_reporte.html'
-    form_class = PhotosForm
+    template_name = 'Repmuni/mapa_reporte_foto.html'
     success_url = 'Repmuni'
     def get(self, request):
-        context = {
-            "form": self.form_class()
-        }
-        return render(request, self.template_name, context)
+        form = PhotosForm()
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         form = PhotosForm(request.POST, request.FILES)
         if form.is_valid():
+            #name = form.cleaned_data.get('name')
             form.save()
+        return redirect(Photos.objects.order_by('-pk')[0])
+
+class UploadPhotosView(View):
+    template_name = 'Repmuni/mapa_reporte.html'
+    formset_obj = modelformset_factory(Photos, PhotosForm)
+    
+    def get(self, request):
+        formset = self.formset_obj(request.GET or None)
+        return render(request, self.template_name, {'formset': formset})
+
+    def post(self, request):
+        formset = self.formset_obj(request.POST, request.FILES or None)
+        #form = PhotosForm(request.POST, request.FILES)
+        #print(request.FILES.keys())
+        if formset.is_valid():
+            for form in formset:
+                if form.is_valid():
+                    #name = form.cleaned_data.get('name')
+                    form.save()
             return redirect(Photos.objects.order_by('-pk')[0])
+        return render(request, self.template_name, {'formset': formset})
 
 class DetailPhotoView(DetailView):
     model = Photos
@@ -52,20 +70,24 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
+            
+            context = {
+                'reg_user': request.POST['username'],
+                'reg_email': request.POST['email'],
+                'reg_name': request.POST['first_name'],
+                'reg_lastName': request.POST['last_name'],
+            }
             form.save()
-            form_register = RegistrationForm()
-            return render(request, 'Repmuni/registro_exitoso.html')
+            return render(request, 'registration/registro_exitoso.html', context)
         else:
-            # Return an 'Invalid Login' error message
-            form_register = RegistrationForm()
             context = {'welcome': 'Mal Password',
-                       'form_register': form_register
+                       'form_register': form
                        }
-            return render(request, 'Repmuni/register.html', context)
+            return render(request, 'registration/register.html', context)
     else:
         form_register = RegistrationForm()
         context = {'form_register': form_register}
-        return render(request, 'Repmuni/register.html', context)
+        return render(request, 'registration/register.html', context)
 
 def view_profile(request):
     return render(request, 'Repmuni/profile.html')

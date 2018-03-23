@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Register!</title>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
+                <p>
+                    Bienvenido al Sistema de Reportes de eventos de la
+                    Consejería Departamental para la Gestión del Riesgo
+                    de Norte de Santander.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
+                <div class="well">
+                    <h3>Registrarse</h3>
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            {{ form_register.non_field_errors }}
+                            {{ form_register.username.errors }}
+                            {{ form_register.email.errors }}
+                            {{ form_register.first_name.errors }}
+                            {{ form_register.last_name.errors }}
+                            {{ form_register.password1.errors }}
+                            {{ form_register.password2.errors }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Usuario:</span>
+                                    {{ form_register.username }}
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">E-Mail:</span>
+                                    {{ form_register.email }}
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Nombres:</span>
+                                    {{ form_register.first_name }}
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Apellidos:</span>
+                                    {{ form_register.last_name }}
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-check"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Password:</span>
+                                    {{ form_register.password1 }}
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-qrcode"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Conf. Password:</span>
+                                    {{ form_register.password2 }}
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-qrcode"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4">
+                                <button class="btn btn-warning btn-block" type="submit">Registrase</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
