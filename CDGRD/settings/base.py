@@ -133,6 +133,6 @@ LOGIN_EXEMPT_URLS = (
     r'^repmuni/register/$',
     r'^repmuni/reset-password/$',
     r'^repmuni/reset-password/done/$',
-    r'^repmuni/reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+    r'^repmuni/reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)/(?P<token>[0-9A-Za-z]{1,3}-[0-9A-Za-z]{1,20})/$',
     r'^repmuni/reset-password/complete/$',
 )

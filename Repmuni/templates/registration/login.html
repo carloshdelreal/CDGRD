@@ -36,6 +36,11 @@
                     <form method="post">
                         {% csrf_token %}
                         <div class="row">
+                            {{ form.non_field_errors }}
+                            {{ form.username.errors }}
+                            {{ form.password.errors }}
+                            </div>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">Usuario:</span>

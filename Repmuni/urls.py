@@ -1,5 +1,5 @@
 from django.conf.urls import url, include
-from django.contrib.auth.forms import PasswordResetForm
+from django.urls import resolve
 from django.contrib.auth.views import (
     LoginView, 
     LogoutView, 
@@ -37,7 +37,8 @@ urlpatterns = [
     
     url(r'^reset-password/$', PasswordResetView.as_view(success_url='done/'), name='reset_password'),
     url(r'^reset-password/done/$', PasswordResetDoneView.as_view(), name='password_reset_done'),
-    url(r'^reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)/(?P<token>[0-9A-Za-z]{1,3}-[0-9A-Za-z]{1,20})/$',PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    url(r'^reset-password/complete/$', PasswordResetCompleteView, name='password_reset_complete'),
+    url(r'^reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)/(?P<token>[0-9A-Za-z]{1,3}-[0-9A-Za-z]{1,20})/$',
+        PasswordResetConfirmView.as_view(success_url='/repmuni/reset-password/complete/'), name='password_reset_confirm'),
+    url(r'^reset-password/complete/$', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     
     ]
