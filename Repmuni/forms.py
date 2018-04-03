@@ -1,8 +1,11 @@
 from django import forms
 from django.forms import ModelForm
+from django.utils import html
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm
-from .models import Report, ReportAlbums, Photos
+from .models import Report, ReportAlbums, Photos, UserProfile
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, HTML, Div
 #from django.db import models
 
 class AuthenticationForm_CDGRD(AuthenticationForm):
@@ -14,22 +17,7 @@ class AuthenticationForm_CDGRD(AuthenticationForm):
         model = User
         fields = ['username', 'password']
         
-class RegistrationForm(UserCreationForm):
-    
-    UserCreationForm.error_messages = {
-        'password_mismatch': "Los Passwords no coinciden"
-    }
-    UserCreationForm.base_fields["password1"].help_text = (
-        '<ul><li>Su password no puede ser similar a su información personal</li>'
-            '<li>Debe contener al menos 8 caracteres</li>'
-            '<li>No debe ser usado comunmente</li>'
-            '<li>No debe ser enteramente numérico</li>'
-        '</ul>'
-    )
-    UserCreationForm.base_fields["password1"].widget.attrs.update({'class': "form-control"})
-    UserCreationForm.base_fields["password2"].widget.attrs.update({'class': "form-control"})
-    #print(type(UserCreationForm.base_fields["password1"].widget_attrs))
-    
+class RegistrationForm(UserCreationForm):    
     class Meta:
         model = User
         fields = [
@@ -40,17 +28,6 @@ class RegistrationForm(UserCreationForm):
             "password1",
             "password2"
         ]
-        help_texts = {
-            "username": "",
-            "password1": "",
-            "password2": "",
-        }
-        widgets = {
-            'username': forms.TextInput(attrs={'class': "form-control", "placeholder": "pepitoperez"}),
-            'first_name': forms.TextInput(attrs={'class': "form-control", "placeholder": "Pepito"}),
-            'last_name': forms.TextInput(attrs={'class': "form-control", "placeholder": "Pérez"}),
-            'email': forms.EmailInput(attrs={'class': "form-control", "placeholder": "pepitoperez@gmail.com"}),
-        }
 
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
@@ -63,14 +40,31 @@ class RegistrationForm(UserCreationForm):
         return user
 
 class EditProfileForm(UserChangeForm):
+    password = None
     class Meta:
         model = User
         fields = [
+            "username",
             "first_name",
             "last_name",
-            "email",
-            "password"
         ]
+class EditUserProfileForm(ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = [
+            "description",
+            "city",
+            "website",
+            "phone",
+            "image",
+        ]
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            HTML("""{% if UserProfile.image.url != null %}<img class="img-responsive" src="{{ UserProfile.image.url }}">{% endif %}"""),
+        )
+        super(EditUserProfileForm, self).__init__(*args, **kwargs)
 
 class PasswordResetFormCDGRD(PasswordResetForm):
     PasswordResetForm.base_fields["email"].widget.attrs.update({'class': "form-control"})

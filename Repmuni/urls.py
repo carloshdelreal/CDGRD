@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^login/$', LoginView.as_view(authentication_form=AuthenticationForm_CDGRD), name='login'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     
-    url(r'^password-change/$', PasswordChangeView.as_view(), name='password_change'),
+    url(r'^password-change/$', PasswordChangeView.as_view(success_url='done/'), name='password_change'),
     url(r'^password-change/done/$', PasswordChangeDoneView.as_view(), name='password_change_done'),
     
     url(r'^reset-password/$', PasswordResetView.as_view(success_url='done/'), name='reset_password'),

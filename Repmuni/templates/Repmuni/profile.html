@@ -37,24 +37,24 @@
                         </tr>
                         <tr>
                             <th>Description:</th>
-                            <td>{{ user.UserProfile.description }}</td>
+                            <td>{{ UserProfile.description }}</td>
                         </tr>
                         <tr>
                             <th>City:</th>
-                            <td>{{ user.UserProfile.city }}</td>
+                            <td>{{ UserProfile.city }}</td>
                         </tr>
                         <tr>
                             <th>Website:</th>
-                            <td>{{ user.UserProfile.website }}</td>
+                            <td>{{ UserProfile.website }}</td>
                         </tr>
                         <tr>
                             <th>Phone:</th>
-                            <td>{{ user.UserProfile.phone }}</td>
+                            <td>{{ UserProfile.phone }}</td>
                         </tr>
-                        {% if user.userprofile.image.url != null %}
+                        {% if UserProfile.image.url != null %}
                         <tr>
                             <th>Image:</th>
-                            <td><img src="{{ user.userprofile.image.url }}" width="240" alt="{{ user }}_photo"></td>
+                            <td><img src="{{ UserProfile.image.url }}" width="240" alt="{{ user }}_photo"></td>
                         </tr>
                         {% endif %}
 

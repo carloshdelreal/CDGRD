@@ -1,6 +1,6 @@
 from django.forms import modelformset_factory
 from django.shortcuts import render, redirect
-from Repmuni.forms import RegistrationForm, EditProfileForm
+from .forms import RegistrationForm, EditProfileForm, EditUserProfileForm, ReportForm, PhotosForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, user_logged_in
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordResetCompleteView
@@ -10,8 +10,7 @@ from django.contrib.auth.models import User
 from django.views.generic.edit import FormView
 from django.views.generic import DetailView
 from django.views import View
-from .forms import ReportForm, PhotosForm
-from .models import Photos
+from .models import Photos, UserProfile
 
 def Reporte(request):
     return render(request, 'Repmuni/reporte_anonimo.html')
@@ -70,7 +69,6 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            
             context = {
                 'reg_user': request.POST['username'],
                 'reg_email': request.POST['email'],
@@ -80,29 +78,31 @@ def register(request):
             form.save()
             return render(request, 'registration/registro_exitoso.html', context)
         else:
-            context = {'welcome': 'Mal Password',
-                       'form_register': form
-                       }
+            context = { 'form': form }
             return render(request, 'registration/register.html', context)
     else:
-        form_register = RegistrationForm()
-        context = {'form_register': form_register}
+        form = RegistrationForm()
+        context = {'form': form}
         return render(request, 'registration/register.html', context)
 
 def view_profile(request):
-    return render(request, 'Repmuni/profile.html')
+    context = { 'UserProfile': UserProfile.objects.get(user=request.user) }
+    return render(request, 'Repmuni/profile.html', context)
 
 def edit_profile(request):
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
-
-        if form.is_valid():
+        form_up = EditUserProfileForm(request.POST, request.FILES, instance=UserProfile.objects.get(user=request.user))
+        if form.is_valid() and form_up.is_valid():
             form.save()
-            return redirect('/profile')
+            form_up.save()
+            return redirect('/repmuni/profile')
     else:
+        UP = UserProfile.objects.get(user=request.user)
         form = EditProfileForm(instance=request.user)
-        context = {'form': form}
-        return render(request, 'Repmuni/profile_edit.html',context)
+        form_up = EditUserProfileForm(instance=UP)
+        context = {'form': form, 'form_up': form_up, "UserProfile": UP}
+        return render(request, 'Repmuni/profile_edit.html', context)
 
 def Password_Change(request):
     if request.method == 'POST':
