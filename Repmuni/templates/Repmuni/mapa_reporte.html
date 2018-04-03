@@ -5,36 +5,17 @@
 <script src="{% static 'Repmuni/Scripts/ScriptMapaReporte.js' %}"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcV9t4hin5YG-KBRXb8rn4zD6XLoCmB7g&v=3&callback=initMap"></script>
 {% endblock %}
-
+{% load crispy_forms_tags %}
 {% block body %}
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
             <div id="map"></div>
         </div>
-        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-7">
+        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-6">
             <form enctype="multipart/form-data" method="POST" action="">
-                {% for form in formset %}
-                {% csrf_token %}
-                <div class="row form-row">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            {{ form.image }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.imagedescription }}
-                        </div>
-                        <div class="form-group">
-                            {% if form.imagedescription.value and forloop.counter != last_form_counter %}
-                                <span class="input-group-btn"><button class="btn btn-warning remove-form-row"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button></span>
-                            {% else %}
-                                <span class="input-group-btn"><button class="btn btn-success add-form-row"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>                
-                {% endfor %}
-                {{ formset.management_form }}
+                
+                {% crispy form %}
                 <div class="row">
                     <div class="col-xs-4 col-xs-offset-2 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4">
                         <button class="btn btn-danger btn-block" type="submit">Reportar</button>

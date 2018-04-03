@@ -19,7 +19,7 @@ from Repmuni.forms import AuthenticationForm_CDGRD
 urlpatterns = [
 
     url(r'^reporte/$', views.Reporte, name='reporte'),
-    url(r'^reporteReal/$', UploadPhotosView.as_view(), name='reporte_real'),
+    url(r'^reporteReal/$', views.ReporteReal.as_view(), name='reporte_real'),
     url(r'^reporteRealfoto/$', UploadPhotoView.as_view(), name='reporte_real_foto'),
     url(r'^mapa/$', views.Mapa, name='mapa'),
     url(r'^photo/(?P<pk>\d+)/$', DetailPhotoView.as_view(), name='detail'),

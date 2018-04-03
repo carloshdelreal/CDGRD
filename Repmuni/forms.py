@@ -5,8 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm
 from .models import Report, ReportAlbums, Photos, UserProfile
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML, Div
-#from django.db import models
+from crispy_forms.layout import Layout, HTML
 
 class AuthenticationForm_CDGRD(AuthenticationForm):
     AuthenticationForm.error_messages = {'invalid_login': 'Ingrese un password y contraseña correcta, verifique mayusculas y minúsculas',
@@ -48,6 +47,14 @@ class EditProfileForm(UserChangeForm):
             "first_name",
             "last_name",
         ]
+    def __init__(self, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-3'
+        self.helper.field_class = 'col-md-9'
+
 class EditUserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
@@ -59,12 +66,27 @@ class EditUserProfileForm(ModelForm):
             "image",
         ]
     def __init__(self, *args, **kwargs):
+        super(EditUserProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-3'
+        self.helper.field_class = 'col-md-9'
         self.helper.layout = Layout(
-            HTML("""{% if UserProfile.image.url != null %}<img class="img-responsive" src="{{ UserProfile.image.url }}">{% endif %}"""),
+            "description",
+            "city",
+            "website",
+            "phone",
+            "image",
+            HTML("""{% if UserProfile.image.url != null %}
+                    <div class="col-md-7 col-md-offset-4">
+                    <br>
+                        <img class="img-responsive" src="{{ UserProfile.image.url }}">
+                    <br>
+                    </div>
+                    {% endif %}"""),
         )
-        super(EditUserProfileForm, self).__init__(*args, **kwargs)
+        
 
 class PasswordResetFormCDGRD(PasswordResetForm):
     PasswordResetForm.base_fields["email"].widget.attrs.update({'class': "form-control"})
@@ -98,7 +120,6 @@ class PhotosForm(ModelForm):
         #     },
         # }
 
-
 class ReportForm(ModelForm):
     class Meta:
         model = Report
@@ -106,5 +127,21 @@ class ReportForm(ModelForm):
             "title",
             "fenomena",
             "descrip",
+            "lat",
+            "lng",
             "photos",
         ]
+    def __init__(self, *args, **kwargs):
+        super(ReportForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-3'
+        self.helper.field_class = 'col-md-9'
+        self.helper.layout = Layout(
+            "title",
+            "fenomena",
+            "descrip",
+            "lat",
+            "lng",
+            "photos",
+        )
