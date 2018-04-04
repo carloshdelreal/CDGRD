@@ -1,11 +1,11 @@
 from django import forms
-from django.forms import ModelForm
-from django.utils import html
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm
-from .models import Report, ReportAlbums, Photos, UserProfile
+from django.contrib.auth.forms import (
+    UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm
+)
+from .models import Report, Photos, UserProfile
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML
+from crispy_forms.layout import Layout, HTML, Field
 
 class AuthenticationForm_CDGRD(AuthenticationForm):
     AuthenticationForm.error_messages = {'invalid_login': 'Ingrese un password y contraseña correcta, verifique mayusculas y minúsculas',
@@ -27,7 +27,6 @@ class RegistrationForm(UserCreationForm):
             "password1",
             "password2"
         ]
-
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
         user.first_name = self.cleaned_data["first_name"]
@@ -49,13 +48,13 @@ class EditProfileForm(UserChangeForm):
         ]
     def __init__(self, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
+        self.helper = FormHelper(self)
         self.helper.form_tag = False
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-3'
         self.helper.field_class = 'col-md-9'
 
-class EditUserProfileForm(ModelForm):
+class EditUserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = [
@@ -67,17 +66,12 @@ class EditUserProfileForm(ModelForm):
         ]
     def __init__(self, *args, **kwargs):
         super(EditUserProfileForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
+        self.helper = FormHelper(self)
         self.helper.form_tag = False
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-3'
         self.helper.field_class = 'col-md-9'
-        self.helper.layout = Layout(
-            "description",
-            "city",
-            "website",
-            "phone",
-            "image",
+        self.helper.layout.append( 
             HTML("""{% if UserProfile.image.url != null %}
                     <div class="col-md-7 col-md-offset-4">
                     <br>
@@ -87,40 +81,10 @@ class EditUserProfileForm(ModelForm):
                     {% endif %}"""),
         )
         
-
 class PasswordResetFormCDGRD(PasswordResetForm):
     PasswordResetForm.base_fields["email"].widget.attrs.update({'class': "form-control"})
 
-class PhotosForm(ModelForm):
-    class Meta:
-        model = Photos
-        fields = [
-            "image",
-            "imagedescription",
-        ]
-        label = {
-            "imagedescription": "Descripción de la Imágen",
-        }
-        required = {
-            "image": True,
-            "imagedescription": True,
-        }
-        # initial = {
-        #     "imagedescription": "Escriba una descripción de la Imágen"
-        # }
-        widgets = {
-            'imagedescription': forms.Textarea(attrs={'rows': 3, 'class': "form-control", "placeholder": "Describa la Imágen"}),
-        }
-        # help_texts = {
-        #     'imagedescription': 'Describa que intenta mostrar en la fotografía',
-        # }
-        # error_messages = {
-        #     'imagedescription': {
-        #         'max_length': "Esta descripción está muy larga :D",
-        #     },
-        # }
-
-class ReportForm(ModelForm):
+class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
         fields = [
@@ -129,19 +93,60 @@ class ReportForm(ModelForm):
             "descrip",
             "lat",
             "lng",
-            "photos",
         ]
     def __init__(self, *args, **kwargs):
         super(ReportForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-3'
         self.helper.field_class = 'col-md-9'
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
         self.helper.layout = Layout(
             "title",
             "fenomena",
-            "descrip",
+            Field("descrip", rows="3"),
             "lat",
             "lng",
-            "photos",
+            )
+class PhotosForm(forms.ModelForm):
+    class Meta:
+        model = Photos
+        fields = [
+            "imagedescription",
+            "image",            
+        ]
+    def __init__(self, *args, **kwargs):
+        super(PhotosForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-3'
+        self.helper.field_class = 'col-md-6'
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+        self.helper.layout = Layout(
+            Field("imagedescription", rows="2"),
+            "image",
+            HTML("""{% if UserProfile.image.url != null %}
+                    <div class="col-md-3">
+                    <br>
+                        <img class="img-responsive" src="{{ UserProfile.image.url }}">
+                    <br>
+                    </div>
+                    {% endif %}"""),
+
         )
+        self.render_required_fields = True
+
+UploadPhotosFormset = forms.modelformset_factory(
+    Photos,
+    PhotosForm,
+)
+
+PhotosFormSet = forms.inlineformset_factory(
+    Report,
+    Photos,
+    PhotosForm,
+    UploadPhotosFormset,
+    extra=2,
+    min_num=1,
+)

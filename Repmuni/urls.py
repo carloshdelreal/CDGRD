@@ -1,13 +1,8 @@
 from django.conf.urls import url, include
 from django.urls import resolve
 from django.contrib.auth.views import (
-    LoginView, 
-    LogoutView, 
-    PasswordResetView,
-    PasswordResetDoneView,
-    PasswordResetConfirmView,
-    PasswordResetCompleteView,
-    PasswordChangeView,
+    LoginView, LogoutView, PasswordResetView, PasswordResetDoneView,
+    PasswordResetConfirmView, PasswordResetCompleteView, PasswordChangeView,
     PasswordChangeDoneView,
 )
 from Repmuni import views

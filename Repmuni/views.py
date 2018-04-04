@@ -1,26 +1,42 @@
-from django.forms import modelformset_factory
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm, EditProfileForm, EditUserProfileForm, ReportForm, PhotosForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, user_logged_in
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordResetCompleteView
 #from django.contrib.auth.decorators import login_required 
 from django.contrib.auth.models import User
-# Create your views here.
+
 from django.views.generic.edit import FormView
 from django.views.generic import DetailView
 from django.views import View
-from .models import Photos, UserProfile
+from .models import Photos, UserProfile, Report
+from .forms import (
+    RegistrationForm, EditProfileForm, EditUserProfileForm, 
+    ReportForm, PhotosForm, UploadPhotosFormset, PhotosFormSet
+)
 
 def Reporte(request):
     return render(request, 'Repmuni/reporte_anonimo.html')
 
-class ReporteReal(FormView):
+class ReporteReal(View):
     template_name = 'Repmuni/mapa_reporte.html'
-    form_class = ReportForm
-    success_url = '/mapa/'
-    def form_valid(self, form):
-        return super().form_valid(form)
+    form = ReportForm()
+    formset = PhotosFormSet(queryset=Photos.objects.none())
+    def get(self, request):
+        context = {
+            "form": self.form,
+            "formset": self.formset,
+        }
+        return render(request, self.template_name, context)
+    def post(self, request):
+        form = self.form(request.POST)
+        formset = self.formset(request.POST, queryset=Photos.objects.none())
+        if form.is_valid() and formset.is_valid():
+            for form in formset:
+                if form.is_valid():
+                    form.save()
+            return redirect("/home/")
+        return render(request, self.template_name, {'formset': formset, "helper": self.helper})
+    
 
 class UploadPhotoView(View):
     template_name = 'Repmuni/mapa_reporte_foto.html'
@@ -38,7 +54,7 @@ class UploadPhotoView(View):
 
 class UploadPhotosView(View):
     template_name = 'Repmuni/mapa_reporte.html'
-    formset_obj = modelformset_factory(Photos, PhotosForm)
+    formset_obj = UploadPhotosFormset
     
     def get(self, request):
         formset = self.formset_obj(request.GET or None)

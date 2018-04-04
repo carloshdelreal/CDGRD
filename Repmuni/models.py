@@ -21,15 +21,6 @@ def create_profile(sender, **kwargs):
 
 post_save.connect(create_profile,sender=User)
 
-class Photos(models.Model):
-    image = models.ImageField(upload_to='Report_Photos', blank=False)
-    imagedescription = models.TextField(blank=False)
-
-    def __str__(self):
-        return "Image: " + self.imagedescription
-    def get_absolute_url(self):
-        return "/repmuni/photo/%i/" % self.id 
-
 class Report(models.Model):
     fenomenos = (
         ('S', 'Sismo'),
@@ -47,12 +38,12 @@ class Report(models.Model):
     descrip = models.TextField()
     lat = models.FloatField()
     lng = models.FloatField()
-    photos = models.ManyToManyField(Photos, through='ReportAlbums')
 
-class ReportAlbums(models.Model):
-    AlbumTitle = models.CharField(max_length=100)
-    AlbumDescription = models.TextField()
-    photo = models.ForeignKey(Photos, on_delete=models.CASCADE)
+class Photos(models.Model):
+    image = models.ImageField(upload_to='Report_Photos', blank=False)
+    imagedescription = models.TextField(blank=False)
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
-    created_date = models.DateTimeField(auto_now_add=True)
-
+    def __str__(self):
+        return "Image: " + self.imagedescription
+    def get_absolute_url(self):
+        return "/repmuni/photo/%i/" % self.id 
