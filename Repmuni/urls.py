@@ -6,7 +6,7 @@ from django.contrib.auth.views import (
     PasswordChangeDoneView,
 )
 from Repmuni import views
-from Repmuni.views import UploadPhotosView, DetailPhotoView, UploadPhotoView
+from Repmuni.views import UploadPhotosView, UploadPhotoView
 from Repmuni.forms import AuthenticationForm_CDGRD
 
 #app_name = 'repmuni'
@@ -14,10 +14,13 @@ from Repmuni.forms import AuthenticationForm_CDGRD
 urlpatterns = [
 
     url(r'^reporte/$', views.Reporte, name='reporte'),
-    url(r'^reporteReal/$', views.ReporteReal.as_view(), name='reporte_real'),
+    url(r'^reporteReal/$', views.ReporteReal.as_view(), name='reporte_real_nuevo'),
+    url(r'^reportelista/$', views.ReportList.as_view(), name='reporte_list'),
+    url(r'^reporte/(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/(?P<day>[0-9]{2})/(?P<pk>[0-9]+)$', views.ReportDetail.as_view(), name='reporte_detail'),
+    
     url(r'^reporteRealfoto/$', UploadPhotoView.as_view(), name='reporte_real_foto'),
     url(r'^mapa/$', views.Mapa, name='mapa'),
-    url(r'^photo/(?P<pk>\d+)/$', DetailPhotoView.as_view(), name='detail'),
+    
     url(r'^register/$', views.register, name='register'),
     url(r'^profile/$', views.view_profile, name='profile'),
     url(r'^profile/edit$', views.edit_profile, name='profile_edit'),

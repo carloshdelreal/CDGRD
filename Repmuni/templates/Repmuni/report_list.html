@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head %}
+<title>Mapa Reporte</title>
+<script src="{% static 'Repmuni/Scripts/ScriptMapaReporte.js' %}"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcV9t4hin5YG-KBRXb8rn4zD6XLoCmB7g&v=3&callback=initMap"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+            <div id="map"></div>
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-6">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Fenómeno</th>
+                        <th>Descripción</th>
+                        <th>Latitud</th>
+                        <th>Longitud</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in report_list %}
+                    
+                    <tr>
+                        
+                            <td><a href='{{ item.get_absolute_url }}'>{{ item.title }}</a></td>
+                        <td>{{ item.fenomena }}</td>
+                        <td>{{ item.descrip }}</td>
+                        <td>{{ item.lat }}</td>
+                        <td>{{ item.lng }}</td>
+                    {% empty %}
+                        <td> No has hecho reportes</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+{% endblock %}

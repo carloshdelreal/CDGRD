@@ -5,8 +5,8 @@ from django.contrib.auth.views import PasswordResetCompleteView
 #from django.contrib.auth.decorators import login_required 
 from django.contrib.auth.models import User
 
-from django.views.generic.edit import FormView
-from django.views.generic import DetailView
+from django.views.generic.edit import FormView, CreateView
+from django.views.generic import DetailView, ListView
 from django.views import View
 from .models import Photos, UserProfile, Report
 from .forms import (
@@ -17,10 +17,23 @@ from .forms import (
 def Reporte(request):
     return render(request, 'Repmuni/reporte_anonimo.html')
 
+class ReportList(ListView):
+    template_name = 'report_list.html'
+    def get_queryset(self):
+        return Report.objects.filter(user=self.request.user)
+
+class NuevoReporteReal(FormView):
+    template_name = 'Repmuni/mapa_reporte_nuevo.html'
+    form_class = ReportForm
+    success_url = "/repmuni/reporteLista/"
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(NuevoReporteReal, self).form_valid(form)
+    
 class ReporteReal(View):
     template_name = 'Repmuni/mapa_reporte.html'
-    form = ReportForm()
-    formset = PhotosFormSet(queryset=Photos.objects.none())
+    form = ReportForm
+    formset = PhotosFormSet
     def get(self, request):
         context = {
             "form": self.form,
@@ -29,14 +42,30 @@ class ReporteReal(View):
         return render(request, self.template_name, context)
     def post(self, request):
         form = self.form(request.POST)
-        formset = self.formset(request.POST, queryset=Photos.objects.none())
-        if form.is_valid() and formset.is_valid():
+        formset = self.formset(request.POST, request.FILES)
+        if form.is_valid():
+            r = form.save(commit=False)
+            r.user = request.user
+            r.save()
             for form in formset:
                 if form.is_valid():
-                    form.save()
-            return redirect("/home/")
-        return render(request, self.template_name, {'formset': formset, "helper": self.helper})
-    
+                    p = form.save(commit=False)
+                    p.report = r
+                    p.save()
+            return redirect("/repmuni/reportelista/")
+        return render(request, self.template_name, {"form": self.form,'formset': formset})
+
+class ReportDetail(DetailView):
+    model = Report
+    template_name = "Repmuni/report_detail.html"
+    def get_context_data(self, **kwargs):
+        context = super(ReportDetail, self).get_context_data(**kwargs)
+        try:
+            context['photos'] = Photos.objects.filter(report=self.kwargs['pk'])
+            print(Photos.objects.get(report=self.kwargs['pk']))
+        except:
+            pass
+        return context
 
 class UploadPhotoView(View):
     template_name = 'Repmuni/mapa_reporte_foto.html'
@@ -71,12 +100,6 @@ class UploadPhotosView(View):
                     form.save()
             return redirect(Photos.objects.order_by('-pk')[0])
         return render(request, self.template_name, {'formset': formset})
-
-class DetailPhotoView(DetailView):
-    model = Photos
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
 
 def Mapa(request):
     return render(request, 'Repmuni/mapa.html')

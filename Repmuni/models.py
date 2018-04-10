@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.db.models.signals import post_save
 
 
@@ -30,7 +31,7 @@ class Report(models.Model):
         ('I', 'Incendio'),
         ('O', 'Otro')
     )
-    autor = models.ForeignKey(User)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100)
@@ -38,6 +39,10 @@ class Report(models.Model):
     descrip = models.TextField()
     lat = models.FloatField()
     lng = models.FloatField()
+    def __str__(self):
+        return "Reporte No: " + str(self.id)
+    def get_absolute_url(self):
+        return "/repmuni/reporte/{0:%Y}/{0:%m}/{0:%d}/{1}".format(self.created_date,self.id)
 
 class Photos(models.Model):
     image = models.ImageField(upload_to='Report_Photos', blank=False)

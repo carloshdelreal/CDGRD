@@ -108,6 +108,7 @@ class ReportForm(forms.ModelForm):
             "lat",
             "lng",
             )
+    
 class PhotosForm(forms.ModelForm):
     class Meta:
         model = Photos
@@ -146,7 +147,7 @@ PhotosFormSet = forms.inlineformset_factory(
     Report,
     Photos,
     PhotosForm,
-    UploadPhotosFormset,
+    #UploadPhotosFormset,
     extra=2,
     min_num=1,
 )
