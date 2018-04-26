@@ -1,8 +1,6 @@
-from CDGRD.settings.local import *
+from CDGRD.settings.base import *
 
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['carloshdelreal.pythonanywhere.com']
 
