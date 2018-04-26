@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head %}
+<title>Mapa Reporte</title>
+<script src="{% static 'Repmuni/Scripts/ScriptMapaReporte.js' %}"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcV9t4hin5YG-KBRXb8rn4zD6XLoCmB7g&v=3&callback=initMap"></script>
+{% endblock %}
+{% load crispy_forms_tags %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+            <div id="map"></div>
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-6">
+            <form class="form-horizontal" enctype="multipart/form-data" method="POST" action="">
+                {% csrf_token %}
+                {% crispy form %}
+                <div class="row">
+                    <div class="col-xs-4 col-xs-offset-2 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4">
+                        <button class="btn btn-danger btn-block" type="submit">Reportar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

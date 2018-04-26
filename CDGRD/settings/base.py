@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'Repmuni',
     'home',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,12 +46,14 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'CDGRD.middleware.LoginRequiredMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'CDGRD.urls'
@@ -107,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-CO'
 
 TIME_ZONE = 'UTC'
 
@@ -133,9 +136,9 @@ LOGIN_EXEMPT_URLS = (
     r'^repmuni/register/$',
     r'^repmuni/reset-password/$',
     r'^repmuni/reset-password/done/$',
-    r'^repmuni/reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+    r'^repmuni/reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)/(?P<token>[0-9A-Za-z]{1,3}-[0-9A-Za-z]{1,20})/$',
     r'^repmuni/reset-password/complete/$',
 )
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
+CRISPY_TEMPLATE_PACK = "bootstrap3"
+CRISPY_FAIL_SILENTLY = not DEBUG

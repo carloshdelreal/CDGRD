@@ -1,40 +1,42 @@
-from django.conf.urls import url
-from Repmuni import views
+from django.conf.urls import url, include
+from django.urls import resolve
 from django.contrib.auth.views import (
-    login, logout, password_reset, password_reset_done, password_reset_confirm,
-    password_reset_complete
+    LoginView, LogoutView, PasswordResetView, PasswordResetDoneView,
+    PasswordResetConfirmView, PasswordResetCompleteView, PasswordChangeView,
+    PasswordChangeDoneView,
 )
-
+from Repmuni import views
+from Repmuni.views import UploadPhotosView, UploadPhotoView
+from Repmuni.forms import AuthenticationForm_CDGRD
 
 #app_name = 'repmuni'
 
 urlpatterns = [
 
     url(r'^reporte/$', views.Reporte, name='reporte'),
+    url(r'^reporteReal/$', views.ReporteReal.as_view(), name='reporte_real_nuevo'),
+    url(r'^reportelista/$', views.ReportList.as_view(), name='reporte_list'),
+    url(r'^reporte/(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/(?P<day>[0-9]{2})/(?P<pk>[0-9]+)$', views.ReportDetail.as_view(), name='reporte_detail'),
+    
+    url(r'^reporteRealfoto/$', UploadPhotoView.as_view(), name='reporte_real_foto'),
     url(r'^mapa/$', views.Mapa, name='mapa'),
+    
     url(r'^register/$', views.register, name='register'),
-    url(r'^login/$', login, {'template_name': 'Repmuni/login.html'}, name='login'),
-    url(r'^logout/$', logout, {'template_name': 'Repmuni/logout.html'}, name='logout'),
     url(r'^profile/$', views.view_profile, name='profile'),
     url(r'^profile/edit$', views.edit_profile, name='profile_edit'),
-    url(r'^change-password/$', views.Password_Change, name='password_change'),
+    
+    url('^', include('django.contrib.auth.urls')),
 
-    url(r'^reset-password/$', password_reset,{'template_name':'Repmuni/reset_password.html',
-                                              'post_reset_redirect':'repmuni:password_reset_done',
-                                              'email_template_name':'repmuni/reset_password_email.html'
-                                              }, name='reset_password'),
-
-    url(r'^reset-password/done/$', password_reset_done, {'template_name':'repmuni/reset_password_done.html'
-                                                         } , name='password_reset_done'),
-
-    url(r'^reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        password_reset_confirm, {'template_name': 'Repmuni/reset_password_confirm.html',
-                                 'post_reset_redirect':'repmuni:password_reset_complete'
-                                 }, name='password_reset_confirm'),
-    #python -m smtpd -n -c DebuggingServer localhost:1025
-    #EMAIL_HOST = 'localhost'
-    #EMAIL_PORT = 1025
-    url(r'^reset-password/complete/$', password_reset_complete,
-        {'template_name':'Repmuni/reset_password_complete.html'
-         }, name='password_reset_complete')
+    url(r'^login/$', LoginView.as_view(authentication_form=AuthenticationForm_CDGRD), name='login'),
+    url(r'^logout/$', LogoutView.as_view(), name='logout'),
+    
+    url(r'^password-change/$', PasswordChangeView.as_view(success_url='done/'), name='password_change'),
+    url(r'^password-change/done/$', PasswordChangeDoneView.as_view(), name='password_change_done'),
+    
+    url(r'^reset-password/$', PasswordResetView.as_view(success_url='done/'), name='reset_password'),
+    url(r'^reset-password/done/$', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    url(r'^reset-password/confirm/(?P<uidb64>[0-9A-Za-z]+)/(?P<token>[0-9A-Za-z]{1,3}-[0-9A-Za-z]{1,20})/$',
+        PasswordResetConfirmView.as_view(success_url='/repmuni/reset-password/complete/'), name='password_reset_confirm'),
+    url(r'^reset-password/complete/$', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    
     ]

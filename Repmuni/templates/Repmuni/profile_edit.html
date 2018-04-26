@@ -2,7 +2,7 @@
 {% block head %}
 <title>Profile edit</title>
 {% endblock %}
-
+{% load crispy_forms_tags %}
 {% block body %}
 
 <div class="container">
@@ -14,15 +14,19 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-sm-5 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1">
+        <div class="col-xs-12 col-sm-6 col-md-8 col-md-offset-1 col-lg-6 col-lg-offset-1">
 
-            <div class="container">
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">Submit</button>
+                <form method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        {% crispy form %}
+                        {% crispy form_up %}
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4">
+                            <button class="btn btn-warning btn-block" type="submit">Submit</button>
+                        </div>
+                    </div>
                 </form>
-            </div>
 
         </div>
     </div>

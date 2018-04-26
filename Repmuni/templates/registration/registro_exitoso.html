@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Registro Exitoso</title>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
+                <p>
+                    Bienvenido al Sistema de Reportes de eventos de la
+                    Consejería Departamental para la Gestión del Riesgo
+                    de Norte de Santander.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
+                <div class="well">
+                    <h3>Señor(a), {{ reg_name }} {{ reg_lastName}} </h3>
+                    <p>Se ha registrado satisfactoriamente</p>
+                    <p>su usuario es: {{ reg_user }}</p>
+                    <p>su e-mail de contacto es: {{ reg_email }}</p>
+                    <p>
+                        por favor ingrese con su usuario y contraseña
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-2 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4">
+                <a href="{% url 'repmuni:login' %}"><button class="btn btn-success btn-block">Log In!!</button></a>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

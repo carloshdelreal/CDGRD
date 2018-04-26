@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Mapa</title>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+            <img src="{{ object.image.url }}" width="240" alt="_photo">
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">
+            <div>{{ object.imagedescription }}</div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

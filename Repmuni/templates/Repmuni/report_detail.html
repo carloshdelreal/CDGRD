@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head %}
+<title>Mapa Reporte</title>
+<script src="{% static 'Repmuni/Scripts/ScriptMapaReporte.js' %}"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcV9t4hin5YG-KBRXb8rn4zD6XLoCmB7g&v=3&callback=initMap"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+            <div id="map"></div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <table class="table table-condensed">
+                        <tbody>
+                            <tr>
+                                <th>Título:</th>
+                                <td>{{ object.title }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fenómeno:</th>
+                                <td>{{ object.fenomena }}</td>
+                            </tr>
+                            <tr>
+                                <th>Descripción:</th>
+                                <td>{{ object.descrip }}</td>
+                            </tr>
+                            <tr>
+                                <th>Latitud:</th>
+                                <td>{{ object.lat }}</td>
+                            </tr>
+                            <tr>
+                                <th>Longitud:</th>
+                                <td>{{ object.lng }}</td>
+                            </tr>
+                            {% if UserProfile.image.url != null %}
+                            <tr>
+                                <th>Image:</th>
+                                <td><img src="{{ UserProfile.image.url }}" width="240" alt="{{ user }}_photo"></td>
+                            </tr>
+                            {% endif %}
+    
+                        </tbody>
+                    </table>
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-6">
+            {% for photo in photos %}
+            <div class="col-xs-6">
+                <p>{{ photo.imagedescription }}</p>
+                <img src="{{ photo.image.url }}" class="img-fluid" style="width: 100%" alt="{{ photo.imagedescription }}">
+            </div>
+            {% empty %}
+            "no hay imagenes para mostrar"
+            {% endfor %}
+            
+        </div>
+    </div>
+
+
+{% endblock %}

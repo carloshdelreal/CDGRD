@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load staticfiles %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'Repmuni/home_style.css' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'Repmuni/images/favicon.ico' %}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="{% static 'Repmuni/Scripts/Script.js' %}"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcV9t4hin5YG-KBRXb8rn4zD6XLoCmB7g&v=3&callback=initMap"></script>
+
     {% block head %}
     {% endblock %}
 </head>
@@ -56,8 +54,13 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="">
+                                    <a href="{% url 'repmuni:reporte_list' %}">
                                         <span class="glyphicon glyphicon-cd" aria-hidden="true"></span>&nbsp; Mis Reportes
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="{% url 'repmuni:reporte_real_nuevo' %}">
+                                        <span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Reporte Real
                                     </a>
                                 </li>
                                 <li class="">
@@ -114,7 +117,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-lg-10 col-lg-offset-1">
                 <footer class="page-header">
                     <strong>Powered By:</strong>Ingeniería Ciencia y Tecnología SAS
                 </footer>
