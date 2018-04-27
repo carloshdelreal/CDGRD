@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, user_logged_in
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordResetCompleteView
-#from django.contrib.auth.decorators import login_required 
+#from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from django.views.generic.edit import FormView, CreateView
@@ -10,7 +10,7 @@ from django.views.generic import DetailView, ListView
 from django.views import View
 from .models import Photos, UserProfile, Report
 from .forms import (
-    RegistrationForm, EditProfileForm, EditUserProfileForm, 
+    RegistrationForm, EditProfileForm, EditUserProfileForm,
     ReportForm, PhotosForm, UploadPhotosFormset, PhotosFormSet
 )
 
@@ -29,7 +29,7 @@ class NuevoReporteReal(FormView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(NuevoReporteReal, self).form_valid(form)
-    
+
 class ReporteReal(View):
     template_name = 'Repmuni/mapa_reporte.html'
     form = ReportForm
@@ -84,7 +84,7 @@ class UploadPhotoView(View):
 class UploadPhotosView(View):
     template_name = 'Repmuni/mapa_reporte.html'
     formset_obj = UploadPhotosFormset
-    
+
     def get(self, request):
         formset = self.formset_obj(request.GET or None)
         return render(request, self.template_name, {'formset': formset})
@@ -115,6 +115,7 @@ def register(request):
                 'reg_lastName': request.POST['last_name'],
             }
             form.save()
+
             return render(request, 'registration/registro_exitoso.html', context)
         else:
             context = { 'form': form }
@@ -127,6 +128,7 @@ def register(request):
 def view_profile(request):
     context = { 'UserProfile': UserProfile.objects.get(user=request.user) }
     return render(request, 'Repmuni/profile.html', context)
+
 
 def edit_profile(request):
     if request.method == 'POST':
@@ -143,6 +145,7 @@ def edit_profile(request):
         context = {'form': form, 'form_up': form_up, "UserProfile": UP}
         return render(request, 'Repmuni/profile_edit.html', context)
 
+
 def Password_Change(request):
     if request.method == 'POST':
         form = PasswordChangeForm(data=request.POST, user=request.user)
@@ -157,4 +160,3 @@ def Password_Change(request):
         form = PasswordChangeForm(user=request.user)
         context = {'form': form}
         return render(request, 'Repmuni/password_change.html',context)
-

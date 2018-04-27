@@ -20,8 +20,9 @@
                 <div class="well">
                     <h3>Registrarse</h3>
                     <form method="POST">
+
                         {% csrf_token %}
-                        
+
                         <div class="row">
                             <div class="col-xs-12 col-sm-10 col-md-8">
                                 {{ form|crispy }}
