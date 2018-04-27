@@ -7,3 +7,4 @@ sendgrid.env
 .vscode/
 Repmuni/media/Report_Photos/*
 Repmuni/media/profile_image/*
+mysqldb.cnf
