@@ -1,5 +1,7 @@
 from CDGRD.settings.base import *
 
+SECRET_KEY = '$y*!$bx=phx)fvp*w&t5#0n@2vlt%amujrx9-!k65$@+&z$&lc'
+
 DEBUG = True
 
 ALLOWED_HOSTS = ['carloshdelreal.pythonanywhere.com']
