@@ -4,15 +4,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['carloshdelreal.pythonanywhere.com']
 
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'consejeria',
+        'NAME': 'carloshdelreal$consejeria',
         'USER': 'carloshdelreal',
-        'PASSWORD': 'riesgo2016',
+        'PASSWORD': 'geologia2014',
         'HOST': 'carloshdelreal.mysql.pythonanywhere-services.com',
-        'PORT': '3306',
+        'OPTIONS': {
+        'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
-"""

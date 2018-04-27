@@ -115,29 +115,7 @@ def register(request):
                 'reg_lastName': request.POST['last_name'],
             }
             form.save()
-<<<<<<< HEAD
-            form_register = RegistrationForm()
-            context = {'welcome': 'inicio',
-                       'msj': request.POST['username'],
-                       'form_register': form_register
-                       }
-            return render(request, 'home/home.html', context)
-        else:
-            # Return an 'Invalid Login' error message
-            form_register = RegistrationForm()
-            context = {'welcome': 'Mal Password',
-                       'form_register': form_register
-                       }
-            return render(request, 'Repmuni/register.html', context)
-    else:
-        form_register = RegistrationForm()
-        context = {'form_register': form_register}
-        return render(request, 'Repmuni/register.html', context)
 
-def view_profile(request):
-    context = {'user': request.user}
-    return render(request, 'Repmuni/profile.html')
-=======
             return render(request, 'registration/registro_exitoso.html', context)
         else:
             context = { 'form': form }
@@ -150,7 +128,7 @@ def view_profile(request):
 def view_profile(request):
     context = { 'UserProfile': UserProfile.objects.get(user=request.user) }
     return render(request, 'Repmuni/profile.html', context)
->>>>>>> 98194b777b76fff30d2c496c11f4fb7e3b5e27fd
+
 
 def edit_profile(request):
     if request.method == 'POST':
@@ -163,14 +141,10 @@ def edit_profile(request):
     else:
         UP = UserProfile.objects.get(user=request.user)
         form = EditProfileForm(instance=request.user)
-<<<<<<< HEAD
-        context = {'form': form}
-        return render(request, 'Repmuni/profile_edit.html',context)
-=======
         form_up = EditUserProfileForm(instance=UP)
         context = {'form': form, 'form_up': form_up, "UserProfile": UP}
         return render(request, 'Repmuni/profile_edit.html', context)
->>>>>>> 98194b777b76fff30d2c496c11f4fb7e3b5e27fd
+
 
 def Password_Change(request):
     if request.method == 'POST':
@@ -185,9 +159,4 @@ def Password_Change(request):
     else:
         form = PasswordChangeForm(user=request.user)
         context = {'form': form}
-<<<<<<< HEAD
         return render(request, 'Repmuni/password_change.html',context)
-=======
-        return render(request, 'Repmuni/password_change.html',context)
-
->>>>>>> 98194b777b76fff30d2c496c11f4fb7e3b5e27fd
