@@ -8,3 +8,4 @@ sendgrid.env
 Repmuni/media/Report_Photos/*
 Repmuni/media/profile_image/*
 mysqldb.cnf
+Repmuni/media/

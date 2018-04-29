@@ -14,61 +14,58 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-sm-5 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-md-offset-1 col-lg-5 col-lg-offset-1">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <th>Username:</th>
+                        <td>{{ user }}</td>
+                    </tr>
+                    <tr>
+                        <th>First Name:</th>
+                        <td>{{ user.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Name:</th>
+                        <td>{{ user.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description:</th>
+                        <td>{{ UserProfile.description }}</td>
+                    </tr>
+                    <tr>
+                        <th>City:</th>
+                        <td>{{ UserProfile.city }}</td>
+                    </tr>
+                    <tr>
+                        <th>Website:</th>
+                        <td>{{ UserProfile.website }}</td>
+                    </tr>
+                    <tr>
+                        <th>Phone:</th>
+                        <td>{{ UserProfile.phone }}</td>
+                    </tr>
+                    {% if UserProfile.image.url != null %}
+                    <tr>
+                        <th>Image:</th>
+                        <td><img src="{{ UserProfile.image.url }}" width="240" alt="{{ user }}_photo"></td>
+                    </tr>
+                    {% endif %}
 
-            <div class="container">
-                <table class="table table-condensed">
-                    <tbody>
-                        <tr>
-                            <th>Username:</th>
-                            <td>{{ user }}</td>
-                        </tr>
-                        <tr>
-                            <th>First Name:</th>
-                            <td>{{ user.first_name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Last Name:</th>
-                            <td>{{ user.last_name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Email:</th>
-                            <td>{{ user.email }}</td>
-                        </tr>
-                        <tr>
-                            <th>Description:</th>
-                            <td>{{ UserProfile.description }}</td>
-                        </tr>
-                        <tr>
-                            <th>City:</th>
-                            <td>{{ UserProfile.city }}</td>
-                        </tr>
-                        <tr>
-                            <th>Website:</th>
-                            <td>{{ UserProfile.website }}</td>
-                        </tr>
-                        <tr>
-                            <th>Phone:</th>
-                            <td>{{ UserProfile.phone }}</td>
-                        </tr>
-                        {% if UserProfile.image.url != null %}
-                        <tr>
-                            <th>Image:</th>
-                            <td><img src="{{ UserProfile.image.url }}" width="240" alt="{{ user }}_photo"></td>
-                        </tr>
-                        {% endif %}
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="container">
-                <h4>Editar Perfil</h4>
-                <a href="{% url 'repmuni:profile_edit' %}"><button type="button">Editar Perfil</button></a>
-            </div>
-            <div class="container">
-                <h4>Cambiar Password</h4>
-                <a href="{% url 'repmuni:password_change' %}"><button type="button">Cambiar Pass</button></a>
-            </div>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5">
+            <h4>Editar Perfil</h4>
+            <a href="{% url 'repmuni:profile_edit' %}"><button type="button">Editar Perfil</button></a>
+            
+            <h4>Cambiar Password</h4>
+            <a href="{% url 'repmuni:password_change' %}"><button type="button">Cambiar Pass</button></a>
+        
 
         </div>
     </div>
