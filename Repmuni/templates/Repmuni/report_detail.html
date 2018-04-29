@@ -46,15 +46,17 @@
                     </table>
         </div>
         <div class="col-xs-12 col-sm-7 col-md-8 col-lg-6">
+
             {% for photo in photos %}
             <div class="col-xs-6">
                 <p>{{ photo.imagedescription }}</p>
+                {% if photo.image.url != null %}
                 <img src="{{ photo.image.url }}" class="img-fluid" style="width: 100%" alt="{{ photo.imagedescription }}">
+                {% endif %}
             </div>
             {% empty %}
             "no hay imagenes para mostrar"
             {% endfor %}
-            
         </div>
     </div>
 
