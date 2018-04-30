@@ -10,3 +10,4 @@ Repmuni/media/profile_image/*
 mysqldb.cnf
 CDGRD/settings/dev.py
 Repmuni/media/
+Repmuni/static/admin/
