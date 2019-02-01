@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.db.models.signals import post_save
+from django.urls import reverse
 
 
 # Create your models here.
@@ -51,4 +52,4 @@ class Photos(models.Model):
     def __str__(self):
         return "Image: " + self.imagedescription
     def get_absolute_url(self):
-        return "/repmuni/photo/%i/" % self.id 
+        return reverse('repmuni:repmuni_photos', args=[str(self.id)])

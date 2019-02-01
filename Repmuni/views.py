@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, user_logged_in
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth.views import PasswordResetCompleteView
@@ -60,11 +60,14 @@ class ReportDetail(DetailView):
     template_name = "Repmuni/report_detail.html"
     def get_context_data(self, **kwargs):
         context = super(ReportDetail, self).get_context_data(**kwargs)
-        try:
-            context['photos'] = Photos.objects.filter(report=self.kwargs['pk'])
-            print(Photos.objects.get(report=self.kwargs['pk']))
-        except:
-            pass
+        context['photos'] = get_list_or_404(Photos, report=self.kwargs['pk'])
+        return context
+
+class PhotoDetail(DetailView):
+    model = Photos
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['photo'] = get_object_or_404(Photos, pk=self.kwargs['pk'])
         return context
 
 class UploadPhotoView(View):
