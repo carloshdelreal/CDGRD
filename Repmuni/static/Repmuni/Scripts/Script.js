@@ -22,7 +22,7 @@ $(function() {
         $(this).addClass('estrella-azul');
     });
     $("svg polygon").click(function(){
-        alert("hello "+this.parentElement.getAttribute("name"));
+        alert("hello "+this.parentElement.classList.item(0));
     });    
 });
 
